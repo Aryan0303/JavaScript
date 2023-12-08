@@ -138,3 +138,4 @@
 // console.log(arr)
 let arr=[1,2,3].map(x=>x+4545474457)
 console.log(arr)
+arr =[2,56,87]
