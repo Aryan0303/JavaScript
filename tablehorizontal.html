@@ -1,0 +1,330 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<!-- Bootstrap CDN -->
+	<link href= 
+"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+		rel="stylesheet"
+		integrity= 
+"sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+		crossorigin="anonymous"> 
+        <script src="https://kit.fontawesome.com/37d3e5461b.js" crossorigin="anonymous"></script>
+	<title>Bootstrap 5 Table Always responsive</title> 
+    <style>
+        th, td {
+	white-space: nowrap;
+}
+
+.first-col {
+    position: absolute;
+	width: 8em;
+	margin-left: -8em;
+    
+}
+.table-bordered>:not(caption)>*>* {
+    border-style: hidden;
+}
+.table-wrapper {
+    overflow-x: scroll;
+    margin-left: 8rem;
+    
+}
+.custom-card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 0px 0px 0px 0px ;
+            border-radius: 10px;
+        }
+        .form-check-input{
+            margin: 5px 5px 0px 2px ;
+        }
+        .search-container {
+    margin: 3rem 0rem 4rem 50rem;
+}
+    </style>
+</head> 
+
+<body> 
+	<div class="container">
+        <div class="search-container">
+            <div class="input-group">
+                <input type="text" class="form-control" id="searchInput" placeholder="Search" oninput="searchAndUpdateTable() " >
+                <button class="btn btn-outline-secondary" type="button" id="searchButton"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+        <div class="row  justify-content-center">
+            <div class="col-md-6 col-12">
+        <div class="card custom-card">
+            <div class="row text-center justify-content-center" style="width: 30rem;">
+                <h2 class="col-sm-5"> Category</h2>
+                <button class="col-sm-1"><i class="fa-solid fa-plus"></i></button>
+            </div>
+           
+            
+        <div class="table-wrapper mt-4">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="first-col" style="border: 1px solid">Title</th>
+                        <th class="Description">Description</th>
+                        <th>Units</th>
+                        <th>Actions</th>
+                        <th class="Description">Description</th>
+                        <th>Units</th>
+                        <th>Actions</th>
+                        <th class="Description">Description</th>
+                        <th>Units</th>
+                        <th>Actions</th>
+                        <th class="Description">Description</th>
+                        <th>Units</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="first-col" style="border: 1px solid"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <img src="" alt="">DOG</th>
+                        <td class="Description">this   is  a   Dog  Description</td>
+                        <td>15</td>
+                        <td><i class="fa-solid fa-file-pen"></i><i class="fa-solid fa-trash"></i></td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                    </tr>
+                    <tr>
+                        <th class="first-col" style="border: 1px solid"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <img src="" alt="">Cat</th>
+                        <td class="Description">this   is  a   Cat  Description</td>
+                        <td>14</td>
+                        <td><i class="fa-solid fa-file-pen"></i><i class="fa-solid fa-trash"></i></td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                    </tr>
+                    <tr>
+                        <th class="first-col" style="border: 1px solid"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <img src="" alt="">SmallPets</th>
+                        <td class="Description">this   is  a   SmallPets  Description</td>
+                        <td>17</td>
+                        <td><i class="fa-solid fa-file-pen"></i><i class="fa-solid fa-trash"></i></td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                    </tr>
+                    <tr>
+                        <th class="first-col" style="border: 1px solid"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <img src="" alt="">Reptiles</th>
+                        <td class="Description">this   is  a   Reptiles  Description</td>
+                        <td>35</td>
+                        <td><i class="fa-solid fa-file-pen"></i><i class="fa-solid fa-trash"></i></td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                    </tr>
+                    <tr>
+                        <th class="first-col" style="border: 1px solid"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <img src="" alt="">birds</th>
+                        <td class="Description">this   is  a   Birds  Description</td>
+                        <td>25</td>
+                        <td><i class="fa-solid fa-file-pen"></i><i class="fa-solid fa-trash"></i></td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                    </tr>
+                    <tr>
+                        <th class="first-col" style="border: 1px solid"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <img src="" alt="">Wild</th>
+                        <td class="Description">this   is  a   Wild  Description</td>
+                        <td>21</td>
+                        <td><i class="fa-solid fa-file-pen"></i><i class="fa-solid fa-trash"></i></td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-md-6 col-12">
+    <div class="card custom-card">
+        <div class="row text-center justify-content-center" style="width: 30rem;">
+            <h2 class="col-sm-6">Sub-Category</h2>
+            <button class="col-sm-1"><i class="fa-solid fa-plus"></i></button>
+        </div>
+        
+        
+        <div class="table-wrapper mt-4">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="first-col" style="border: 1px solid">Title</th>
+                        <th class="Description">Description</th>
+                        <th>Units</th>
+                        <th>Actions</th>
+                        <th class="Description">Description</th>
+                        <th>Units</th>
+                        <th>Actions</th>
+                        <th class="Description">Description</th>
+                        <th>Units</th>
+                        <th>Actions</th>
+                        <th class="Description">Description</th>
+                        <th>Units</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="first-col" style="border: 1px solid"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <img src="" alt="">DOG</th>
+                        <td class="Description">this   is  a   Dog  Description</td>
+                        <td>15</td>
+                        <td><i class="fa-solid fa-file-pen"></i><i class="fa-solid fa-trash"></i></td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                    </tr>
+                    <tr>
+                        <th class="first-col" style="border: 1px solid"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <img src="" alt="">Cat</th>
+                        <td class="Description">this   is  a   Cat  Description</td>
+                        <td>14</td>
+                        <td><i class="fa-solid fa-file-pen"></i><i class="fa-solid fa-trash"></i></td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                    </tr>
+                    <tr>
+                        <th class="first-col" style="border: 1px solid"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <img src="" alt="">SmallPets</th>
+                        <td class="Description">this   is  a   SmallPets  Description</td>
+                        <td>17</td>
+                        <td><i class="fa-solid fa-file-pen"></i><i class="fa-solid fa-trash"></i></td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                    </tr>
+                    <tr>
+                        <th class="first-col" style="border: 1px solid"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <img src="" alt="">Reptiles</th>
+                        <td class="Description">this   is  a   Reptiles  Description</td>
+                        <td>35</td>
+                        <td><i class="fa-solid fa-file-pen"></i><i class="fa-solid fa-trash"></i></td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                    </tr>
+                    <tr>
+                        <th class="first-col" style="border: 1px solid"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <img src="" alt="">birds</th>
+                        <td class="Description">this   is  a   Birds  Description</td>
+                        <td>25</td>
+                        <td><i class="fa-solid fa-file-pen"></i><i class="fa-solid fa-trash"></i></td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                    </tr>
+                    <tr>
+                        <th class="first-col" style="border: 1px solid"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <img src="" alt="">Wild</th>
+                        <td class="Description">this   is  a   Wild  Description</td>
+                        <td>21</td>
+                        <td><i class="fa-solid fa-file-pen"></i><i class="fa-solid fa-trash"></i></td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</div>
+</div>
+</div>
+    </div>
+    <script>  
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.getElementById("searchInput");
+  const searchButton = document.getElementById("searchButton");
+
+  searchButton.addEventListener("click", searchAndUpdateTable);
+  searchInput.addEventListener("input", searchAndUpdateTable);
+
+  function searchAndUpdateTable() {
+    const searchText = searchInput.value.toLowerCase();
+
+    document.querySelectorAll("table").forEach((table) => {
+      Array.from(table.querySelectorAll("tbody tr")).map((row) => {
+        const rowVisible = Array.from(row.querySelectorAll("td")).some(
+          (cell) => cell.textContent.toLowerCase().includes(searchText)
+        );
+
+        // Set row visibility based on the search
+        row.style.display = rowVisible ? "" : "none";
+      });
+    });
+  }
+});
+</script>
+  
+</body> 
+</html>
