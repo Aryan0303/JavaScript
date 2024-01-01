@@ -1,0 +1,121 @@
+<?php
+$pageTitle = "Products";
+include('../header/header.php');
+$qurry1="SELECT * FROM category;";
+$run1=mysqli_query($conn, $qurry1);
+$row1=mysqli_fetch_all($run1, MYSQLI_ASSOC);
+$qurry2="SELECT * FROM sub_category;";
+$run2=mysqli_query($conn, $qurry2);
+$row2=mysqli_fetch_all($run2, MYSQLI_ASSOC);
+$qurry3="SELECT * FROM supplier;";
+$run3=mysqli_query($conn, $qurry3);
+$row3=mysqli_fetch_all($run3, MYSQLI_ASSOC);
+$qurry4="SELECT * FROM variations;";
+$run4=mysqli_query($conn, $qurry4);
+$row4=mysqli_fetch_all($run4, MYSQLI_ASSOC);
+?>
+
+<div class="container card p-3">
+    <form action="../database/products/addProduct.php" method="post">
+    <div class="row my-1">
+        <div class="d-flex">
+            <input type="hidden" name="user" value="1">
+            <input type="text" class="form-control me-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="p_name" placeholder="Product Title" style="width:40%">
+            <select class="form-select mx-2" aria-label="Default select example" name="category">
+                <option selected>Select Category</option>
+                <?php foreach ($row1 as $row) { ?>
+                    <option value="<?php echo $row['id'];?>"><?php echo $row['cat_name'];?></option>
+                <?php } ?>
+            </select>
+            <select class="form-select mx-2" aria-label="Default select example" name="subcat">
+                <option selected>Select Sub Category</option>
+                <?php foreach ($row2 as $row) { ?>
+                        <option value="<?php echo $row['id'];?>"><?php echo $row['subcat_name'];?></option>
+                <?php } ?>>
+            </select>
+            
+            <select class="form-select mx-2" aria-label="Default select example" name="supplier">
+                <option selected>Select Supplier</option>
+                <?php foreach ($row3 as $row) { ?>
+                        <option value="<?php echo $row['id'];?>"><?php echo $row['sup_fname'];?></option>
+                <?php } ?>
+            </select>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="d-flex">
+            <div class="col-4 me-2">
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="p_summary"> Summary </textarea>
+            </div>
+            <div class="col-4 max-2">
+                <input type="file" class="form-control" id="inputGroupFile01">
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <span class="fs-6 fw-bolder">Variations:</span>
+    </div>
+    <div class="row">
+        <div id="variationInputs">
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="d-flex">
+            <select class="form-select me-2" aria-label="Default select example" name="color[]">
+                <option selected>Select Colors</option>
+                <?php foreach ($row4 as $row) { ?>
+                    <option value="<?php echo $row['id'];?>" style="background-color:<?php echo $row['var_color'];?>;"><?php echo $row['var_color'];?></option>
+                <?php } ?>
+            </select>
+            <input type="text" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Size" style="width:10%" name="size[]">
+            <input type="text" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="SKU" style="width:10%" name="sku[]">
+            <input type="number" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Quantity" style="width:10%" name="quantity[]">
+            <input type="number" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Max Quantity" style="width:10%" name="quant_limit[]">
+            <input type="number" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Price" style="width:10%" name="price[]">
+            <input type="file" class="form-control mx-2" id="inputGroupFile01" style="width:15%" name="image[]">
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="d-flex justify-content-center">
+                <span class="btn btn-outline-primary btn-sm" onclick="handleVariations()"> Add Other Variation</span>
+            </div>
+    </div>
+    <div class="row">
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+        </div>
+    </div>
+
+    
+    </form>
+</div>
+
+<script>
+    
+    const addInput = document.getElementById("variationInputs");
+
+const handleVariations = () => {
+    const field = document.createElement("div");
+    field.innerHTML = `
+        <div class="row mt-4">
+            <div class="d-flex">
+                <select class="form-select me-2" aria-label="Default select example" name="color[]">
+                    <option selected>Select Colors</option>
+                    <?php foreach ($row4 as $row) { ?>
+                        <option value="<?php echo $row['id'];?>" style="background-color:<?php echo $row['var_color'];?>;"><?php echo $row['var_color'];?></option>
+                    <?php } ?>
+                </select>
+                <input type="text" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Size" style="width:10%" name="size[]">
+                    <input type="text" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="SKU" style="width:10%" name="sku[]">
+                    <input type="number" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Quantity" style="width:10%" name="quantity[]">
+                    <input type="number" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Max Quantity" style="width:10%" name="quant_limit[]">
+                    <input type="number" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Price" style="width:10%" name="price[]">
+                    <input type="file" class="form-control mx-2" id="inputGroupFile01" style="width:15%" name="image[]">
+            </div>
+        </div>`;
+
+    addInput.appendChild(field);
+};
+
+</script>
