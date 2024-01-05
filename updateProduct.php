@@ -1,134 +1,215 @@
 <?php
-$pageTitle = "Update Product";
+$pageTitle = "Edit Product";
+include('../header/header.php');
 
-$servername = 'localhost';
-$username = 'root';
-$password = '';
-$db = 'pos';
+$id = $_GET['rn']; 
+echo "$id";
+$query = "SELECT 
+    sv.*,
+    p.p_name AS p_name,
+    p.id AS p_id,
+    p.cat_id AS c_id,
+    p.supp_id AS s_id,
+    p.subcat AS sc_id,
+    c.cat_name AS cat_name,
+    sc.subcat_name AS subcat_name,
+    s.sup_fname AS sup_fname,
+    p.p_summary AS p_summary,
+    v.var_color AS var_color,
+    v.id AS v_id,
+    csv.p_id AS csv_p_id,
+    csv.c_id AS csv_c_id
+FROM 
+    size_variation sv
+JOIN 
+    color_size_variations csv ON csv.s_id = sv.id
+JOIN 
+    products p ON p.id = csv.p_id
+JOIN
+    category c ON p.cat_id = c.id
+JOIN
+    sub_category sc ON p.subcat = sc.id
+JOIN
+    supplier s ON p.supp_id = s.id
+-- JOIN
+--     variations v ON v.id = csv.c_id
+JOIN
+    variations v ON csv.c_id = v.id
 
-// Connection
-$conn = mysqli_connect($servername, $username, $password, $db);
-
-if (!$conn) {
-    die("Sorry Connection Fail:" . mysqli_connect_error());
-}
-
-// Check if the form is submitted
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    $id = $_POST['id'];
-    echo "$id";
-    $v_id = $_POST['v_id'];
-    echo "$v_id";
-    $csv_c_id = $_POST['csv_c_id'];
-    echo "$csv_c_id";
-    $p_id = $_POST['p_id'];
-    echo "$p_id";
-    $c_id = $_POST['c_id'];
-    echo "$c_id";
-    $s_id = $_POST['s_id'];
-    echo "$s_id";
-    $sc_id = $_POST['sc_id'];
-    echo "$sc_id";
-    $p_name = $_POST['p_name'];
-    $p_summary = $_POST['p_summary'];
-    $size = $_POST['size'];
-    $sku = $_POST['sku'];
-    $quantity = $_POST['quantity'];
-    $quant_limit = $_POST['quant_limit'];
-    $price = $_POST['price'];
 
-    // Handle file uploads
-    $newImageName = null;
+WHERE 
+    sv.id = $id";
 
-    $newImageName = null;
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_assoc($result);
 
-// Loop through each uploaded file
+// Fetch all categories from the database
+$queryCategories = "SELECT * FROM category";
+$resultCategories = mysqli_query($conn, $queryCategories);
 
+// Fetch all sub-categories from the database
+$querySubcategories = "SELECT * FROM sub_category";
+$resultSubcategories = mysqli_query($conn, $querySubcategories);
 
-if (isset($_FILES['image']) && $_FILES['image']['name']) {
-    $fileName = $_FILES['image']['name'];
-    $fileSize = $_FILES['image']['size'];
-    $tempName = $_FILES['image']['tmp_name'];
+// Fetch all suppliers from the database
+$querySuppliers = "SELECT * FROM supplier";
+$resultSuppliers = mysqli_query($conn, $querySuppliers);
 
-    // Validate and upload the new image
-    $validImageExtensions = ['webp', 'png', 'jpg', 'jpeg'];
-    $imageExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+// Fetch all distinct colors from the variations table
+$queryColors = "SELECT * FROM variations";
+$resultColors = mysqli_query($conn, $queryColors);
+// fetch  all   id    
 
-    if (in_array($imageExtension, $validImageExtensions) && $fileSize <= 1000000) {
-        $newImageName = uniqid() . '.' . $imageExtension;
-        $uploadPath = '../../assets/images/' . $newImageName;
-
-        if (move_uploaded_file($tempName, $uploadPath)) {
-            // If the upload is successful, update the image column
-            $updateImageQuery = "UPDATE size_variation SET images = ? WHERE id = ?";
-            $stmtUpdateImage = $conn->prepare($updateImageQuery);
-            $stmtUpdateImage->bind_param("si", $newImageName, $id);
-            $stmtUpdateImage->execute();
-            $stmtUpdateImage->close();
-            
-          
-            
-        } else {
-            echo 'Error uploading new image';
-        }
-    } else {
-        echo 'Invalid image format or size';
-    }
-}
-
-
-
-// Update the product variation in the database
-$updateVariationQuery = "UPDATE size_variation 
-                        SET  
-                            sizes = ?,
-                            price = ?,
-                            quantity = ?,
-                            sku = ?, 
-                            quant_limit = ?,  
-                            images = ? 
-                        WHERE
-                            id = ?";
-
-$stmt2 = $conn->prepare($updateVariationQuery);
-$stmt2->bind_param("siisisi", $size, $price, $quantity, $sku, $quant_limit, $newImageName, $id);
-$stmt2->execute();
-
-    // Update product details including the new image name
-    $updateProductQuery = "UPDATE products 
-                            SET
-                                p_name = ?, 
-                                p_summary = ?, 
-                                cat_id = ?,  
-                                supp_id = ?,
-                                subcat = ? 
-                            WHERE
-                                id = ?";
-
-    $stmt1 = $conn->prepare($updateProductQuery);
-    $stmt1->bind_param("ssiiii", $p_name, $p_summary, $c_id, $s_id, $sc_id, $p_id);
-    $stmt1->execute();
-
-   
-
-    // Update the color_size_variations table
-    $updatecolor_size_variationsQuery = "UPDATE color_size_variations 
-                                        SET  
-                                            c_id = ?
-                                        WHERE
-                                            c_id = ?
-                                            AND
-                                            s_id = ?
-                                            AND
-                                            p_id = ?";
-
-    $stmt3 = $conn->prepare($updatecolor_size_variationsQuery);
-    $stmt3->bind_param("iiii", $v_id, $csv_c_id, $id, $p_id);
-    $stmt3->execute();
-
-    exit();
-} else {
-    echo "error";
-}
 ?>
+
+<div class="container card p-3">
+    <form action="../database/products/updateProduct.php" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="row  col-md-6">
+                <div class="d-flex">
+                    <!-- product Name  -->
+                    <input type="hidden" name="user" value="1">
+                    <input type="hidden" name="id" value="<?php echo $id; ?>">
+                    <input type="hidden" name="p_id" value="<?php echo $row['p_id']; ?>">
+                    <input type="hidden" name="csv_c_id" value="<?php echo $row['csv_c_id']; ?>">
+                    <!-- <input type="hidden" name="s_id" value="<?php  // echo $row['s_id']; ?>"> -->
+                    <!-- <input type="hidden" name="c_id" value="<?php //echo $row['c_id']; ?>"> -->
+                    <!-- <input type="hidden" name="sc_id" value="<?php //echo $row['sc_id']; ?>"> -->
+
+                    <input type="text" class="form-control me-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="p_name" value="<?php echo $row['p_name']; ?>" style="width:40%">
+                    <!-- Category Dropdown -->
+                    <select class="form-select mx-2" aria-label="Default select example" name="c_id">
+                        <?php 
+                        // Display each category as an option
+                        while ($category = mysqli_fetch_assoc($resultCategories)) {
+                            // Check if the current category is the selected category
+                            $selected = ($category['cat_name'] == $row['cat_name']) ? 'selected' : '';
+                            echo '<option value="' . $category['id'] . '" ' . $selected . '>' . $category['cat_name'] . '</option>';
+                        }
+                        ?>
+                    </select>
+
+
+                    <!-- Sub-Category Dropdown -->
+                    <select class="form-select mx-2" aria-label="Default select example" name="sc_id">
+                        <?php
+                        // Display each sub-category as an option
+                        while ($subcategory = mysqli_fetch_assoc($resultSubcategories)) {
+                            $selected = ($subcategory['subcat_name'] == $row['subcat_name']) ? 'selected' : '';
+
+                            echo '<option value="' . $subcategory['id'] . '" ' . $selected . '>' . $subcategory['subcat_name'] . '</option>';
+                        }
+                        ?>
+                    </select>
+
+                    <!-- Supplier Dropdown -->
+                    <select class="form-select mx-2" aria-label="Default select example" name="s_id">
+                    <?php
+                        // Display each supplier as an option
+                        while ($supplier = mysqli_fetch_assoc($resultSuppliers)) {
+                            $selected = ($supplier['sup_fname'] == $row['sup_fname']) ? 'selected' : '';
+
+                            echo '<option value="' . $supplier['id'] . '" ' . $selected . '>' . $supplier['sup_fname'] . '</option>';
+                        }
+                        ?>
+                    </select>
+
+                </div>
+        </div>
+
+        <!-- summary  -->
+        <div class="row col-md-6">
+            <div class="d-flex">
+                <div class="col-6 me-2">
+                    <textarea class="form-control  mb-1 p-2" id="exampleFormControlTextarea1" rows="1" name="p_summary" style="width: 30rem;"><?php echo $row['p_summary']; ?></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Row for Existing Variation Input Fields -->
+        <div class="row">
+            <div id="variationInputs">
+                <!-- Existing variation input fields go here -->
+                <!-- You might want to display existing variations for editing -->
+            </div>
+        </div>
+
+        <!-- Row for Color, Size, SKU, Quantity, Max Quantity, Price, and Image Upload -->
+        <div class="row mt-2">
+            <div class="d-flex">
+              <!-- Color Dropdown -->
+                        <select class="form-select me-2" aria-label="Default select example" style="width: 10rem !important;" name="v_id">
+                         <?php
+                        // Display each supplier as an option
+                        while ($Colors  = mysqli_fetch_assoc($resultColors )) {
+                            $selected = ($Colors ['var_color'] == $row['var_color']) ? 'selected' : '';
+
+                            echo '<option value="' . $Colors['id'] . '" ' . $selected . '>' . $Colors['var_color'] . '</option>';
+                        }
+                        ?>
+                        
+                        </select>
+
+
+
+                <!-- Add other input fields as needed -->
+                <input type="text" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Size" style="width:10%" name="size" value="<?php echo $row['sizes']; ?>">
+                <input type="text" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="SKU" style="width:10%" name="sku" value="<?php echo $row['sku']; ?>">
+                <input type="number" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Quantity" style="width:10%" name="quantity" value="<?php echo $row['quantity']; ?>">
+                <input type="number" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Max Quantity" style="width:10%" name="quant_limit" value="<?php echo $row['quant_limit']; ?>">
+                <input type="number" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Price" style="width:10%" name="price" value="<?php echo $row['price']; ?>">
+                <input type="file" class="form-control mx-2" id="inputGroupFile01" style="width:20%" name="image" placeholder="../assets/images/<?php echo $row['images']; ?>" value=" ../assets/images/<?php echo $row['images']; ?>">
+                <!-- <img src="../assets/images/<?php echo $row['images']; ?>" alt="different image"> -->
+            </div>
+        </div>
+
+        <!-- Row for Submit Button -->
+        <div class="row">
+            <div class="d-flex justify-content-center mt-2">
+                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    const addInput = document.getElementById("variationInputs");
+
+    const addRows = () => {
+        const rowCount = document.getElementById("inputRowCount").value;
+        
+        for (let i = 0; i < rowCount; i++) {
+            const field = document.createElement("div");
+            field.innerHTML = `<div class="row mt-2">
+                <div class="d-flex">
+                    <select class="form-select me-2" aria-label="Default select example" name="color[]" style="width: 10rem !important;">
+                        <option selected>Select Colors</option>
+                        <?php foreach ($row4 as $row) { ?>
+                            <option value="<?php echo $row['id']; ?>" style="background-color:<?php echo $row['var_color']; ?>;"><?php echo $row['var_color']; ?></option>
+                        <?php } ?>
+                    </select>
+                    <input type="text" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Size" style="width:10%" name="size[]">
+                    <input type="text" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="SKU" style="width:10%" name="sku[]">
+                    <input type="number" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Quantity" style="width:10%" name="quantity[]">
+                    <input type="number" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Max Quantity" style="width:10%" name="quant_limit[]">
+                    <input type="number" class="form-control mx-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Price" style="width:10%" name="price[]">
+                    <input type="file" class="form-control mx-2" id="inputGroupFile01" style="width:20%" name="image[]">
+                    <i class="fa-regular fa-circle-xmark btn" style="color:red;" onclick="deleteInput()"></i>
+                </div>
+            </div>`;
+
+            // Insert the new field at the end
+            addInput.insertBefore(field, addInput.firstChild);
+            
+        }
+        
+    };
+        const deleteInput = () => {
+                // Remove the last child from addInput
+                addInput.removeChild(addInput.firstChild);
+            };
+
+</script>
